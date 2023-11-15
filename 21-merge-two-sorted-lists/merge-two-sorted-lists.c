@@ -6,46 +6,42 @@
  * };
  */
 struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
-    struct ListNode *a = list1;
-    struct ListNode *b = list2;
+    if (list1 == NULL) {
+        return list2;
+    } else if (list2 == NULL) {
+        return list1;
+    } 
 
     struct ListNode* head = malloc(sizeof(struct ListNode));
-
-    if (a == NULL) {
-        return b;
-    } else if (b == NULL) {
-        return a;
-    } else {
-        if (a->val < b->val) {
-            head->val = a->val;
-            head->next = malloc(sizeof(struct ListNode));
-            a = a->next;
-        } else {
-            head->val = b->val;
-            head->next = malloc(sizeof(struct ListNode));
-            b = b->next;
-        }
-    }
-
     struct ListNode* current = head;
 
-    while (a != NULL && b != NULL) {
-        if (a->val < b->val) {
+    if (list1->val <= list2->val) {
+        head->val = list1->val;
+        head->next = malloc(sizeof(struct ListNode));
+        list1 = list1->next;
+    } else {
+        head->val = list2->val;
+        head->next = malloc(sizeof(struct ListNode));
+        list2 = list2->next;
+    }
+
+    while (list1 != NULL && list2 != NULL) {
+        if (list1->val <= list2->val) {
             current->next = malloc(sizeof(struct ListNode));
-            current->next->val = a->val;
-            a = a->next;
+            current->next->val = list1->val;
+            list1= list1->next;
         } else {
             current->next = malloc(sizeof(struct ListNode));
-            current->next->val = b->val;
-            b = b->next;
+            current->next->val = list2->val;
+            list2 = list2->next;
         }
         current = current->next;
     }
     
-    if (a == NULL) {
-        current->next = b;
+    if (list1 == NULL) {
+        current->next = list2;
     } else {
-        current->next = a;
+        current->next = list1;
     }
 
     return head;

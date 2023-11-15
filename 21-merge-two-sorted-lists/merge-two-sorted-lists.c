@@ -5,37 +5,44 @@
  *     struct ListNode *next;
  * };
  */
-struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
-    if(!list1) return list2;
-    if(!list2) return list1;
-    struct ListNode* itteratorl1,* backOfNewList;
-    if(list1->val > list2->val){
-        backOfNewList = list2;
-        list2 = list1;
-        list1 = backOfNewList;
-    }else{
-        backOfNewList = list1;
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
+    if (list1 == NULL) {
+        return list2;
+    } else if (list2 == NULL) {
+        return list1;
+    } 
+
+    struct ListNode* head = malloc(sizeof(struct ListNode));
+    struct ListNode* current = head;
+
+    if (list1->val <= list2->val) {
+        head->val = list1->val;
+        head->next = malloc(sizeof(struct ListNode));
+        list1 = list1->next;
+    } else {
+        head->val = list2->val;
+        head->next = malloc(sizeof(struct ListNode));
+        list2 = list2->next;
     }
-    itteratorl1 = list1->next;
-    while(itteratorl1 && list2){
-        if(itteratorl1->val < list2->val){
-            backOfNewList->next = itteratorl1;
-            itteratorl1 = itteratorl1->next;
-        }else{
-            backOfNewList->next = list2;
+
+    while (list1 != NULL && list2 != NULL) {
+        if (list1->val <= list2->val) {
+            current->next = malloc(sizeof(struct ListNode));
+            current->next->val = list1->val;
+            list1= list1->next;
+        } else {
+            current->next = malloc(sizeof(struct ListNode));
+            current->next->val = list2->val;
             list2 = list2->next;
         }
-        backOfNewList = backOfNewList->next;
+        current = current->next;
     }
-    while(itteratorl1){
-        backOfNewList->next = itteratorl1;
-        itteratorl1 = itteratorl1->next;
-        backOfNewList = backOfNewList->next;
+    
+    if (list1 == NULL) {
+        current->next = list2;
+    } else {
+        current->next = list1;
     }
-    while(list2){
-        backOfNewList->next = list2;
-        list2 = list2->next;
-        backOfNewList = backOfNewList->next;
-    }
-    return list1;
+
+    return head;
 }

@@ -12,27 +12,24 @@ struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
         return list1;
     } 
 
-    struct ListNode* head = malloc(sizeof(struct ListNode));
-    struct ListNode* current = head;
-
+    struct ListNode* head;
+    
     if (list1->val <= list2->val) {
-        head->val = list1->val;
-        head->next = malloc(sizeof(struct ListNode));
+        head = list1;
         list1 = list1->next;
     } else {
-        head->val = list2->val;
-        head->next = malloc(sizeof(struct ListNode));
+        head = list2;
         list2 = list2->next;
     }
 
+    struct ListNode* current = head;
+
     while (list1 != NULL && list2 != NULL) {
         if (list1->val <= list2->val) {
-            current->next = malloc(sizeof(struct ListNode));
-            current->next->val = list1->val;
+            current->next = list1;
             list1= list1->next;
         } else {
-            current->next = malloc(sizeof(struct ListNode));
-            current->next->val = list2->val;
+            current->next = list2;
             list2 = list2->next;
         }
         current = current->next;
